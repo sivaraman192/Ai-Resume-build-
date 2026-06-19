@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased font-sans;
+  }
+}
+
+/* Custom scrollbars for a premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-slate-400 dark:hover:bg-slate-600;
+}
+
+/* Glassmorphism panel styling */
+.glass-panel {
+  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50;
+}
+
+/* A4 Page Formatting for Live Resume Preview */
+.a4-container {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 15mm;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: #1e293b; /* Keep text dark inside the preview for recruiter readability */
+  position: relative;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Make preview scale properly on smaller screens */
+.resume-preview-scale-wrapper {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+/* CSS Print stylesheet modifications */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+    font-family: Arial, Georgia, "Times New Roman", serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset container dimensions for standard A4 printing */
+  #resume-preview,
+  .resume-preview,
+  .resume-page,
+  #resume-a4-document,
+  .a4-container {
+    width: 100% !important;
+    max-width: 190mm !important;
+    min-height: auto !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+    transform: none !important;
+    zoom: 1 !important;
+    border: none !important;
+  }
+
+  /* Prevent word compression, spacing distortion, and letter collisions */
+  * {
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    text-rendering: geometricPrecision !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  p, li, span, div {
+    white-space: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  section,
+  .resume-section {
+    margin-bottom: 12px !important;
+    break-inside: avoid !important;
+  }
+
+  h2, h3,
+  .section-title {
+    padding-bottom: 4px !important;
+    margin-bottom: 5px !important;
+    line-height: 1.25 !important;
+  }
+
+  hr,
+  .section-divider {
+    margin-top: 3px !important;
+    margin-bottom: 9px !important;
+  }
+
+  li {
+    margin-bottom: 3px !important;
+  }
+
+  /* Spacing for inner items (Experience, Projects, Education) */
+  .experience-item,
+  .project-item,
+  .education-item,
+  section > div > div {
+    margin-bottom: 8px !important;
+  }
+}
+
+/* Utility to ensure standard margins in preview templates */
+.template-section {
+  margin-bottom: 1.25rem;
+}
+
+.template-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Mobile responsive overrides for screens below 1024px */
+@media (max-width: 1023px) {
+  .builder-layout {
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+  
+  .builder-layout > div {
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+  
+  .builder-toolbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .builder-toolbar button,
+  .builder-toolbar select,
+  .builder-toolbar .relative {
+    flex: 1 1 calc(50% - 8px) !important;
+    min-width: 130px !important;
+  }
+
+  .resume-preview-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding: 16px 8px !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    height: auto !important;
+  }
+
+  .screen-preview-scale {
+    width: 794px !important;
+    min-width: 794px !important;
+    max-width: 794px !important;
+    transform: scale(var(--preview-scale, 0.55)) !important;
+    transform-origin: top left !important;
+    margin-bottom: calc(-1123px * (1 - var(--preview-scale, 0.55))) !important;
+  }
+}
+
