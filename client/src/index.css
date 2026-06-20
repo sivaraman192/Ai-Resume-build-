@@ -209,34 +209,40 @@
 }
 
 .resume-section {
-  margin-top: 16px;
-  break-inside: avoid;
+  margin-top: 14px;
+  margin-bottom: 8px;
   page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .resume-section-title {
   display: block;
   width: 100%;
+  box-sizing: border-box;
+
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 20px;
   text-transform: uppercase;
   color: #111827;
 
-  border-bottom: 1px solid #111827;
-  padding-bottom: 4px;
+  border-top: none !important;
+  border-bottom: 1px solid #111827 !important;
+
+  padding: 0 0 5px 0;
   margin: 0 0 8px 0;
 
   text-decoration: none !important;
+  position: relative;
   break-after: avoid;
   page-break-after: avoid;
 }
 
 .resume-section-title::before,
 .resume-section-title::after {
-  display: none !important;
   content: none !important;
+  display: none !important;
 }
 
 .resume-section-content {
