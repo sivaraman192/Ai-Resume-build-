@@ -202,8 +202,8 @@
   background: #ffffff;
   color: #111827;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.32;
   padding: 28px 34px;
   box-sizing: border-box;
 }
@@ -215,12 +215,16 @@
 }
 
 .resume-section-title {
-  font-size: 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.1;
   text-transform: uppercase;
-  margin-bottom: 3px;
   border-bottom: 1px solid #111827;
   padding-bottom: 2px;
+  margin: 0 0 7px 0;
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
 .resume-section-content {
@@ -230,13 +234,15 @@
 .experience-block,
 .project-block,
 .education-block {
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   page-break-inside: avoid;
   break-inside: avoid;
 }
 
-.project-block {
-  margin-bottom: 9px;
+.project-header,
+.experience-header {
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
 .resume-row {
@@ -247,8 +253,9 @@
 }
 
 .resume-title {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
+  line-height: 1.15;
   margin: 0;
 }
 
@@ -268,11 +275,10 @@
 }
 
 .resume-tech {
-  font-size: 10.5px;
   font-family: "Courier New", monospace;
-  font-weight: 600;
-  color: #334155;
-  margin: 2px 0 5px 0;
+  font-size: 10px;
+  line-height: 1.25;
+  margin: 2px 0 4px 0;
 }
 
 .resume-bullets {
@@ -281,9 +287,11 @@
 }
 
 .resume-bullets li {
-  margin-bottom: 2px;
-  padding-left: 2px;
+  font-size: 10.8px;
   line-height: 1.32;
+  margin-bottom: 2px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .resume-links a {
