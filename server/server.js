@@ -12,14 +12,25 @@ await connectDB();
 const app = express();
 
 // CORS Middleware Configuration
-app.use(
-  cors({
-    origin: 'http://localhost:5173', // Vite Frontend URL
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  process.env.CLIENT_URL,
+  process.env.FRONTEND_URL,
+  "https://ai-resume-build-orpin.vercel.app",
+  "https://ai-resume-build-git-main-sivaraman192s-projects.vercel.app"
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
+
 
 // Express JSON Parser Middleware (limit size for profile photo uploads)
 app.use(express.json({ limit: '10mb' }));
