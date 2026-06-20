@@ -31,7 +31,7 @@ export const ATSTemplate = ({ data }) => {
   const hasLanguages = languages.some(l => l && l.trim() !== '');
 
   return (
-    <div className="a4-container font-serif bg-white text-slate-900 flex flex-col select-text text-xs leading-[1.45]">
+    <div className="resume-page select-text">
       {/* 1. Header Centered Layout */}
       {hasPersonalInfo && (
         <header className="text-center flex flex-col gap-0.5 pb-1 mb-2 border-b-2 border-slate-300">
@@ -54,19 +54,19 @@ export const ATSTemplate = ({ data }) => {
 
           {/* Row 2: GitHub | LinkedIn | Portfolio */}
           {(github || linkedin || portfolio) && (
-            <div className="flex flex-wrap justify-center items-center gap-x-2 text-[11px] text-slate-700 font-sans">
+            <div className="resume-links flex flex-wrap justify-center items-center font-sans">
               {github && (
                 <a href={github.startsWith('http') ? github : `https://${github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                   {github.replace(/https?:\/\/(www\.)?/, '')}
                 </a>
               )}
-              {github && (linkedin || portfolio) && <span className="text-slate-350 select-none">|</span>}
+              {github && (linkedin || portfolio) && <span>|</span>}
               {linkedin && (
                 <a href={linkedin.startsWith('http') ? linkedin : `https://${linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                   {linkedin.replace(/https?:\/\/(www\.)?/, '')}
                 </a>
               )}
-              {linkedin && portfolio && <span className="text-slate-350 select-none">|</span>}
+              {linkedin && portfolio && <span>|</span>}
               {portfolio && (
                 <a href={portfolio.startsWith('http') ? portfolio : `https://${portfolio}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                   {portfolio.replace(/https?:\/\/(www\.)?/, '')}
@@ -79,47 +79,49 @@ export const ATSTemplate = ({ data }) => {
 
       {/* 2. Professional Summary */}
       {summary && summary.trim() && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Professional Summary
           </h2>
-          <p className="text-slate-800 leading-[1.45] font-sans text-justify text-[11px] whitespace-pre-wrap">
-            {summary}
-          </p>
+          <div className="resume-section-content">
+            <p className="whitespace-pre-wrap text-justify">
+              {summary}
+            </p>
+          </div>
         </section>
       )}
 
       {/* 3. Professional Experience */}
       {hasExperience && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Professional Experience
           </h2>
-          <div className="flex flex-col">
+          <div className="resume-section-content">
             {experience.filter(exp => exp.company || exp.role).map((exp, idx) => {
               const bullets = Array.isArray(exp?.description)
                 ? exp.description
                 : (typeof exp?.description === 'string' ? exp.description.split('\n').filter(Boolean) : []);
 
               return (
-                <div key={exp.id || exp._id || idx} className="flex flex-col mb-[10px] last:mb-0">
+                <div key={exp.id || exp._id || idx} className="experience-block">
                   {/* Left: Role | Right: Date */}
-                  <div className="flex justify-between items-baseline font-sans text-[11px] leading-[1.45]">
-                    <span className="font-bold text-black text-[11px] font-serif">{exp?.role}</span>
-                    <span className="text-slate-700 font-semibold">
+                  <div className="resume-row">
+                    <span className="resume-title">{exp?.role}</span>
+                    <span className="resume-date">
                       {exp?.startDate} – {exp?.currentlyWorking ? 'Present' : exp?.endDate}
                     </span>
                   </div>
                   {/* Left: Company | Right: Location */}
-                  <div className="flex justify-between items-baseline font-sans text-[11px] leading-[1.45] mt-0.5">
-                    <span className="font-bold text-slate-800 italic">{exp?.company}</span>
-                    {exp?.location && <span className="text-slate-655 font-semibold">{exp?.location}</span>}
+                  <div className="resume-row mt-0.5">
+                    <span className="resume-subtitle">{exp?.company}</span>
+                    {exp?.location && <span className="resume-location">{exp?.location}</span>}
                   </div>
                   {/* Bullet achievements list */}
                   {bullets.length > 0 && (
-                    <ul className="list-disc pl-[16px] mt-[4px] text-slate-800 text-[11px] font-sans leading-[1.45]">
+                    <ul className="resume-bullets" style={{ listStyleType: 'disc' }}>
                       {bullets.map((bullet, i) => (
-                        <li key={i} className="whitespace-pre-wrap select-text mb-[2px] last:mb-0">
+                        <li key={i} className="whitespace-pre-wrap select-text">
                           {bullet.replace(/^[•\-\*]\s*/, '')}
                         </li>
                       ))}
@@ -134,44 +136,46 @@ export const ATSTemplate = ({ data }) => {
 
       {/* 4. Projects */}
       {hasProjects && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Key Projects
           </h2>
-          <div className="flex flex-col">
+          <div className="resume-section-content">
             {projects.filter(proj => proj.title).map((proj, idx) => {
               const projectBullets = typeof proj.description === 'string'
                 ? proj.description.split('\n').filter(Boolean)
                 : (Array.isArray(proj.description) ? proj.description : []);
 
               return (
-                <div key={proj.id || proj._id || idx} className="flex flex-col mb-[8px] last:mb-0">
+                <div key={proj.id || proj._id || idx} className="project-block">
                   {/* Title left, links right */}
-                  <div className="flex justify-between items-baseline font-sans text-[11px] leading-[1.45]">
-                    <span className="font-bold text-black text-[11px] font-serif">{proj?.title}</span>
-                    <div className="text-[11px] text-slate-655 flex gap-2 font-sans">
-                      {proj?.github && (
-                        <a href={proj.github.startsWith('http') ? proj.github : `https://${proj.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline font-semibold text-slate-700">
-                          GitHub
-                        </a>
-                      )}
-                      {proj?.github && proj?.liveDemo && <span className="text-slate-300">|</span>}
-                      {proj?.liveDemo && (
-                        <a href={proj.liveDemo.startsWith('http') ? proj.liveDemo : `https://${proj.liveDemo}`} target="_blank" rel="noopener noreferrer" className="hover:underline font-semibold text-slate-700">
-                          Live Demo
-                        </a>
-                      )}
-                    </div>
+                  <div className="resume-row">
+                    <span className="resume-title">{proj?.title}</span>
+                    {(proj?.github || proj?.liveDemo) && (
+                      <div className="resume-links">
+                        {proj?.github && (
+                          <a href={proj.github.startsWith('http') ? proj.github : `https://${proj.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            GitHub
+                          </a>
+                        )}
+                        {proj?.github && proj?.liveDemo && <span>|</span>}
+                        {proj?.liveDemo && (
+                          <a href={proj.liveDemo.startsWith('http') ? proj.liveDemo : `https://${proj.liveDemo}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            Live Demo
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                   {/* Tech stack below title */}
                   {proj?.techStack && (Array.isArray(proj.techStack) ? proj.techStack.length > 0 : proj.techStack.trim().length > 0) && (
-                    <div className="text-[10.5px] font-mono text-slate-500 font-semibold mt-[1px] text-left leading-[1.45]">
+                    <div className="resume-tech">
                       Tech Stack: {Array.isArray(proj.techStack) ? proj.techStack.join(', ') : proj.techStack}
                     </div>
                   )}
                   {/* Description bullets compact */}
                   {projectBullets.length > 0 && (
-                    <ul className="list-disc pl-[15px] mt-[3px] text-slate-800 space-y-0.5 text-[11px] font-sans leading-[1.45]">
+                    <ul className="resume-bullets" style={{ listStyleType: 'disc' }}>
                       {projectBullets.map((bullet, i) => (
                         <li key={i} className="whitespace-pre-wrap select-text">
                           {bullet.replace(/^[•\-\*]\s*/, '')}
@@ -188,27 +192,27 @@ export const ATSTemplate = ({ data }) => {
 
       {/* 5. Education */}
       {hasEducation && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Education
           </h2>
-          <div className="flex flex-col gap-2">
+          <div className="resume-section-content">
             {education.filter(edu => edu.institution || edu.degree).map((edu, idx) => (
-              <div key={edu.id || edu._id || idx} className="flex flex-col">
+              <div key={edu.id || edu._id || idx} className="education-block">
                 {/* Left: Degree | Right: Year */}
-                <div className="flex justify-between items-baseline font-sans text-[11px] leading-[1.45]">
-                  <span className="font-bold text-black text-[11px] font-serif">{edu?.degree}</span>
-                  <span className="text-slate-700 font-semibold">{edu?.startYear} – {edu?.endYear}</span>
+                <div className="resume-row">
+                  <span className="resume-title">{edu?.degree}</span>
+                  <span className="resume-date">{edu?.startYear} – {edu?.endYear}</span>
                 </div>
                 {/* Left: Institution */}
-                <div className="font-sans text-[11px] text-slate-850 font-bold text-left mt-0.5">
-                  {edu?.institution}
+                <div className="resume-row mt-0.5">
+                  <span className="resume-subtitle">{edu?.institution}</span>
                 </div>
                 {/* Left: Location | Right: Score */}
                 {(edu?.location || edu?.percentage) && (
-                  <div className="flex justify-between items-baseline font-sans text-[11px] leading-[1.45] mt-0.5">
-                    <span className="text-slate-605 italic">{edu?.location || ''}</span>
-                    {edu?.percentage && <span className="font-bold text-slate-800">CGPA/Percentage: {edu?.percentage}</span>}
+                  <div className="resume-row mt-0.5">
+                    <span className="resume-location italic" style={{ textAlign: 'left', fontWeight: 'normal' }}>{edu?.location || ''}</span>
+                    {edu?.percentage && <span className="resume-date">CGPA/Percentage: {edu?.percentage}</span>}
                   </div>
                 )}
               </div>
@@ -224,15 +228,15 @@ export const ATSTemplate = ({ data }) => {
         if (!hasGroupedSkills) return null;
 
         return (
-          <section className="mt-[10px] mb-[8px]">
-            <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+          <section className="resume-section">
+            <h2 className="resume-section-title">
               Technical Skills
             </h2>
-            <div className="flex flex-col gap-1 font-sans text-[11px] leading-[1.45] text-left">
+            <div className="resume-section-content flex flex-col gap-1">
               {Object.entries(groupedSkills).map(([catName, list]) => (
                 <div key={catName} className="select-all">
-                  <span className="font-bold text-slate-900">{catName}: </span>
-                  <span className="text-slate-850 font-normal">{list.join(', ')}</span>
+                  <span className="font-bold">{catName}: </span>
+                  <span>{list.join(', ')}</span>
                 </div>
               ))}
             </div>
@@ -242,34 +246,38 @@ export const ATSTemplate = ({ data }) => {
 
       {/* 7. Certifications */}
       {hasCertifications && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Certifications
           </h2>
-          <ul className="list-disc pl-[15px] mt-[3px] text-slate-800 space-y-0.5 font-sans text-[11px] leading-[1.45] text-left">
-            {certifications.filter(c => c.name).map((cert, idx) => (
-              <li key={cert.id || cert._id || idx}>
-                <span className="font-bold text-black">{cert?.name}</span> by <span className="italic">{cert?.issuer}</span> ({cert?.date})
-                {cert?.link && (
-                  <a href={cert.link.startsWith('http') ? cert.link : `https://${cert.link}`} target="_blank" rel="noopener noreferrer" className="ml-1.5 text-[10.5px] text-slate-500 hover:underline font-sans">
-                    [Verify]
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
+          <div className="resume-section-content">
+            <ul className="resume-bullets" style={{ listStyleType: 'disc' }}>
+              {certifications.filter(c => c.name).map((cert, idx) => (
+                <li key={cert.id || cert._id || idx}>
+                  <span className="font-bold">{cert?.name}</span> by <span className="italic">{cert?.issuer}</span> ({cert?.date})
+                  {cert?.link && (
+                    <a href={cert.link.startsWith('http') ? cert.link : `https://${cert.link}`} target="_blank" rel="noopener noreferrer" className="ml-1.5 hover:underline" style={{ fontSize: '10px' }}>
+                      [Verify]
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
       )}
 
       {/* 8. Languages */}
       {hasLanguages && (
-        <section className="mt-[10px] mb-[8px]">
-          <h2 className="text-[12px] font-bold uppercase border-b border-slate-800 pb-[2px] mb-[5px] text-slate-800 tracking-wide text-left">
+        <section className="resume-section">
+          <h2 className="resume-section-title">
             Languages
           </h2>
-          <p className="text-slate-800 font-sans text-[11px] leading-[1.45] text-left">
-            {languages.filter(l => l && l.trim() !== '').join(', ')}
-          </p>
+          <div className="resume-section-content">
+            <p>
+              {languages.filter(l => l && l.trim() !== '').join(', ')}
+            </p>
+          </div>
         </section>
       )}
     </div>

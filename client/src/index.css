@@ -195,3 +195,129 @@
   }
 }
 
+/* Print/Export Safe Classes */
+.resume-page {
+  width: 794px;
+  min-height: 1123px;
+  background: #ffffff;
+  color: #111827;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 28px 34px;
+  box-sizing: border-box;
+}
+
+.resume-section {
+  margin-top: 14px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.resume-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+  border-bottom: 1px solid #111827;
+  padding-bottom: 2px;
+}
+
+.resume-section-content {
+  margin-top: 7px;
+}
+
+.experience-block,
+.project-block,
+.education-block {
+  margin-bottom: 10px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.project-block {
+  margin-bottom: 9px;
+}
+
+.resume-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.resume-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.resume-subtitle {
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 600;
+  margin: 1px 0 3px 0;
+}
+
+.resume-date,
+.resume-location {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resume-tech {
+  font-size: 10.5px;
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  color: #334155;
+  margin: 2px 0 5px 0;
+}
+
+.resume-bullets {
+  margin: 3px 0 0 14px;
+  padding: 0;
+}
+
+.resume-bullets li {
+  margin-bottom: 2px;
+  padding-left: 2px;
+  line-height: 1.32;
+}
+
+.resume-links a {
+  color: #1f2937;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+.resume-links span {
+  margin: 0 6px;
+  color: #6b7280;
+}
+
+@media print {
+  .resume-page {
+    width: 794px !important;
+    min-height: 1123px !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .resume-section,
+  .experience-block,
+  .project-block,
+  .education-block {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  a {
+    color: #1f2937 !important;
+    text-decoration: none !important;
+  }
+}
+
+

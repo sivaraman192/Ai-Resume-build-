@@ -1,5 +1,4 @@
-// exportPdf.js: High-fidelity DOM capture PDF generator using html2canvas & jsPDF.
-// Renders the exact ResumePreview element with 100% style, spacing, order, and links.
+// exportPdf.js: High-fidelity DOM capture PDF generator using html2canvas & jsPDF with clickable link annotation fallback.
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
@@ -30,33 +29,30 @@ export const exportResumePdf = async (resumeData, selectedTemplate = 'modern') =
     element.style.border = 'none';
 
     const options = {
-      scale: 3, // High resolution scale to prevent blurry text
+      scale: 3, // High quality scale
       useCORS: true,
       allowTaint: true,
-      logging: false,
       backgroundColor: '#ffffff',
-      // Explicitly specify layout bounds
-      width: element.offsetWidth,
-      height: element.offsetHeight,
-      windowWidth: element.ownerDocument.defaultView.innerWidth,
-      windowHeight: element.ownerDocument.defaultView.innerHeight,
+      logging: false,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
       onclone: (clonedDoc) => {
         const clonedElement = clonedDoc.getElementById(elementId);
         if (clonedElement) {
           // Reset viewport scales and responsive CSS transforms
           clonedElement.style.transform = 'none';
           clonedElement.style.transformOrigin = 'unset';
-          clonedElement.style.width = '210mm';
-          clonedElement.style.minHeight = '297mm';
+          clonedElement.style.width = '794px';
+          clonedElement.style.minHeight = '1123px';
           clonedElement.style.boxShadow = 'none';
           clonedElement.style.border = 'none';
           clonedElement.style.margin = '0';
           clonedElement.style.padding = '0';
 
-          const container = clonedElement.querySelector('.a4-container');
+          const container = clonedElement.querySelector('.resume-page') || clonedElement.querySelector('.a4-container');
           if (container) {
-            container.style.width = '210mm';
-            container.style.minHeight = '297mm';
+            container.style.width = '794px';
+            container.style.minHeight = '1123px';
             container.style.boxShadow = 'none';
             container.style.border = 'none';
             container.style.margin = '0 auto';
@@ -74,36 +70,65 @@ export const exportResumePdf = async (resumeData, selectedTemplate = 'modern') =
     };
 
     const canvas = await html2canvas(element, options);
-    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const imgData = canvas.toDataURL('image/png');
+    
+    const pdf = new jsPDF('p', 'pt', 'a4');
 
-    // Standard A4 dimensions in mm
-    const pdfWidth = 210;
-    const pdfHeight = 297;
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // Create A4 PDF instance
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
-
-    // Calculate canvas scale height
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
     let position = 0;
 
     // Draw first page
-    pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pdfHeight;
 
     // Draw subsequent pages if resume height exceeds A4 bounds
     while (heightLeft > 0) {
       position = heightLeft - imgHeight;
       pdf.addPage();
-      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pdfHeight;
     }
+
+    // --- Clickable Links Fix ---
+    // Calculate scale factor from browser pixel coordinates to PDF point coordinates
+    const elementRect = element.getBoundingClientRect();
+    const scale = pdfWidth / elementRect.width;
+
+    // Query all anchors inside the element
+    const links = element.querySelectorAll('a[href]');
+    links.forEach((linkEl) => {
+      const href = linkEl.getAttribute('href');
+      if (!href || href.trim() === '' || href.startsWith('#')) return;
+
+      // Auto-prefix https:// if URL does not start with http
+      let url = href.trim();
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+
+      const linkRect = linkEl.getBoundingClientRect();
+      const linkX = (linkRect.left - elementRect.left) * scale;
+      const linkY = (linkRect.top - elementRect.top) * scale;
+      const linkWidth = linkRect.width * scale;
+      const linkHeight = linkRect.height * scale;
+
+      // Find which page this link lands on
+      const pageNumber = Math.floor(linkY / pdfHeight) + 1;
+      const linkYOnPage = linkY - ((pageNumber - 1) * pdfHeight);
+
+      // Add clickable annotation to corresponding page if it exists
+      const totalPages = pdf.internal.getNumberOfPages();
+      if (pageNumber <= totalPages) {
+        pdf.setPage(pageNumber);
+        pdf.link(linkX, linkYOnPage, linkWidth, linkHeight, { url });
+      }
+    });
 
     const personalInfo = resumeData.personalInfo || {};
     const exportFilename = personalInfo.fullName 
