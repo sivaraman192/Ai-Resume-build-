@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://ai-resume-build-3748.onrender.com/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('resumeforge_token');
