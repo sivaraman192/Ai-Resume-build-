@@ -218,31 +218,22 @@
 .resume-section-title {
   display: block;
   width: 100%;
-  box-sizing: border-box;
-
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
   text-transform: uppercase;
-  color: #111827;
-
   border-top: none !important;
   border-bottom: 1px solid #111827 !important;
-
-  padding: 0 0 5px 0;
+  padding-bottom: 5px;
   margin: 0 0 8px 0;
-
-  text-decoration: none !important;
-  position: relative;
   break-after: avoid;
   page-break-after: avoid;
 }
 
 .resume-section-title::before,
 .resume-section-title::after {
-  content: none !important;
   display: none !important;
+  content: none !important;
 }
 
 .resume-section-content {
